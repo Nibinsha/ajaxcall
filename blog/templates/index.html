@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+<div class = "forms1" id="first">
+<form  method="post">
+    <label>{{form.name.label_tag}}  </label>
+    {{form.name}}
+    <label>{{form.artist.label_tag}}  </label>
+    {{form.artist}}
+</form>
+    <input type="button" id="nextbtn1" class="btn btn-primary" value="Next">
+</div>
+
+<div class = "form2" id="second" style="display:none">
+<form  method="post">
+    <label>{{class.student.label_tag}}  </label>
+    {{class.student}}
+    <label>{{class.address.label_tag}}  </label>
+    {{class.address}}
+</form>
+     <input type="button" id="backbtn1" class="btn btn-primary" value="Back">
+    <input type="button" id="formSave" class="btn btn-primary" value="Submit">
+    </div>
+
+<input type="button" id="viewBtn" class="btn btn-primary" value="View Result">
+<input type="button" id="logoutBtn" class="btn btn-primary pull-right" value="logout">
+
+<!-- The Modal -->
+<!-- Modal -->
+  <div class="modal" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" >
+            <div class="col-md-12 col-sm-3 col-6 " >
+                <table class="table hover viewDataTable" id="viewDataTable">
+                     <thead>
+
+                     </thead>
+                 </table>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+ <div class="modal" id="editModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" >
+            <div class="col-md-12 col-sm-3 col-6 " >
+                <table class="table hover viewDataTable" id="viewDataTable">
+                     <thead>
+
+                     </thead>
+                 </table>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+ $(document).ready(function() {
+     $('#id_itemCode').keypress(function( e ) {
+                if(e.which === 32)
+                    return false;
+            });
+  });
+
+
+$(document).on('click', '#logoutBtn', function() {
+                 $.ajax({
+                  url: "/logout",
+                  type: "POST",
+                  dataType: "json",
+                  contentType: false,
+                  processData: false,
+                  async:false,
+                  success: function (result)
+                  {
+                    if (result.status == 'success') {
+                    alert("success");
+                    window.location.href="/login";
+                    }
+                    }
+                   });
+
+
+       });
+
+
+$(document).on('click', '#viewBtn', function() {
+ var viewDataTable = $('#viewDataTable').DataTable( {
+
+                            "columns": [
+                                    { "title": "S.No" },
+                                    { "title": "Name" },
+                                    { "title": "artist"},
+                                    { "title": "edit"},
+                                ],
+                            });
+$.ajax({
+              url: "/post_collection",
+              type: "GET",
+              dataType: "json",
+              contentType: false,
+              processData: false,
+              async:false,
+              success: function (result)
+              {
+                $.each(result.data, function( index, value ) {
+                     var sno = index+1;
+
+                       viewDataTable.row.add([sno,value.name,value.artist,"<button type='button' id='myBtn'>Try it</button>"]).draw();
+                     });
+                    $('#myModal').modal('show');
+               }
+              });
+});
+
+
+$(document).on('click', '#nextbtn1', function() {
+$('#second').css('display','block');
+$('#first').css('display','none');
+});
+$(document).on('click', '#backbtn1', function() {
+$('#second').css('display','none');
+$('#first').css('display','block');
+});
+    $(document).on('click', '#formSave', function() {
+
+        var name = $('#id_name').val();
+        var artist = $('#id_artist').val();
+        var student = $('#id_student').val();
+        var address = $('#id_address').val();
+        var data ={'name':name,'artist':artist,'student':student,'address':address};
+
+         $.ajax({
+                  url: "/indexSave",
+                  type: "POST",
+                  dataType: "json",
+                  data: JSON.stringify(data),
+                  contentType: false,
+                  processData: false,
+                  async:false,
+                  success: function (result)
+                  {
+                    if (result.status == 'success') {
+                    alert("success");
+                    window.location.href="/index";
+                    }
+                    }
+                   });
+    });
+
+</script>
+</body>
+</html>
