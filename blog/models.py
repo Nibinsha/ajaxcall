@@ -22,6 +22,7 @@ class Post(models.Model):
 
 class Class(models.Model):
     id = models.AutoField(primary_key=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     student = models.CharField(max_length=255, null=False)
     address = models.CharField(max_length=255, null=False)
     def __str__(self):

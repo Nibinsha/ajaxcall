@@ -61,7 +61,9 @@
 
     </div>
   </div>
-
+<div>
+<button type="button" class="btn btn-default pull-left" id="otpBtn">Generate OTP</button>
+    </div>
 <script>
 
 
@@ -130,7 +132,12 @@ $(document).on('click', '#sbtBtn', function() {
             }
     });
 
+$(document).on('click', '#otpBtn', function() {
+            window.location.href="/sendingemail";
 
+
+
+       });
 
 </script>
 </body>

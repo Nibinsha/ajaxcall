@@ -132,3 +132,10 @@ STATIC_URL = '/static/'
 
 STRIPE_SECRET_KEY = 'sk_test_cEFJBBPL0s2VwqUALPdhMuwq00A2qNOhxT'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_2AR1E8ti0TLcpquaaSCN2qZy006II6sOMN'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'altrockstech@gmail.com'
+EMAIL_HOST_PASSWORD = 'fgcoflzmaecvtfsu'
+EMAIL_PORT = 587

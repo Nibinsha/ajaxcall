@@ -16,7 +16,6 @@ class ClassForm(forms.ModelForm):
 
 
 class PostFormEdit(forms.ModelForm):
-    address = forms.CharField(max_length=15, label='Confirm Password')
 
     class Meta:
         model = Post
