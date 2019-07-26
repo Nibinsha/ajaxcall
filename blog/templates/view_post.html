@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="post">
+
+        {% for i in data %}
+        <h2>{{ i.Name }}</h2>
+        <p>{{ i.Address }}</p>
+        <p>{{ i.Comment }}</p>
+          <a class="btn btn-default" href="{% url 'edit_post' pk=i.id %}">Edit</a>
+        {% endfor %}
+    </div>
+</body>
+</html>

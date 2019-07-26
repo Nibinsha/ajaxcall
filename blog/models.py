@@ -29,4 +29,11 @@ class Class(models.Model):
         return self.student
 
 
+class Test(models.Model):
+    id = models.AutoField(primary_key=True)
+    Name = models.CharField(max_length=255, null=False)
+    Address = models.CharField(max_length=255, null=False)
+    Comment = models.TextField(max_length=255, null=False)
+    def __str__(self):
+        return self.Name
 

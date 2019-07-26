@@ -190,7 +190,30 @@ def postSave(request):
         return JsonResponse({'status': "success"})
     return HttpResponseRedirect('/login')
 
+def post_new(request):
+    if request.method == 'POST':
+       form = TestForm(request.POST)
+       if form.is_valid():
+           form.save()
+           return redirect('homeone')
+    else:
+       form = TestForm()
+    return render(request, 'post_new.html', {'form': form})
 
+def fetchData(request):
+    data = Test.objects.all()
+    return render(request, 'view_post.html', {'data': data})
+
+def edit_post(request, pk):
+    post = get_object_or_404(Test, pk=pk)
+    if request.method == "POST":
+        form = TestEditForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('fetchData')
+    else:
+        form = TestEditForm(instance=post)
+    return render(request, 'post_new.html', {'form': form})
 
 def fetchPostData(request):
     if 'user' in request.session:

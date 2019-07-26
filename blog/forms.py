@@ -44,3 +44,17 @@ class RegistrationForm(forms.ModelForm):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['id'] = "uemail_id"
         self.fields['password'].widget.attrs['id'] = "upassword_id"
+
+
+
+class TestForm(forms.ModelForm):
+       class Meta:
+        model = Test
+        fields = ('id', 'Name', 'Address','Comment')
+
+
+
+class TestEditForm(forms.ModelForm):
+       class Meta:
+        model = Test
+        fields = ('Name', 'Address','Comment')
